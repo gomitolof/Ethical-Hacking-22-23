@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from scapy.all import *
+import subprocess
 
 def print_pkt(pkt):
     pkt.show()

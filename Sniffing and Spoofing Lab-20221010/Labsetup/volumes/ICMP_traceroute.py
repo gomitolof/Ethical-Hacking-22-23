@@ -11,7 +11,7 @@ reachable = False
 
 for ttl in range(1,30):
     icmp.ttl = ttl
-    ans, unans = sr(icmp, retry=3, timeout = 1, verbose = False)
+    ans, unans = sr(icmp, retry = 3, timeout = 1, verbose = False)
     #ans.summary()
     if len(ans) == 0:
         print("%d) * * *" % (ttl))
