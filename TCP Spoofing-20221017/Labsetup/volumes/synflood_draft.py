@@ -4,8 +4,8 @@ from scapy.all import IP, TCP, send
 from ipaddress import IPv4Address
 from random import getrandbits
 
-ip = IP(dst="*.*.*.*")
-tcp = TCP(dport=**, flags='S')   # TO BE COMPLETED
+ip = IP(dst="10.9.0.5")
+tcp = TCP(dport=23, flags='S')   # TO BE COMPLETED
 pkt = ip/tcp
 
 while True:
