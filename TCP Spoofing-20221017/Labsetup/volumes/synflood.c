@@ -211,3 +211,4 @@ unsigned short calculate_tcp_checksum(struct ipheader *ip)
                                      tcp_len + 12);
 }
 
+// Restoring the victim's queue size to its original value (1024), the attack is successfull. Enabling the SYN cookie mechanism, the attack doesn't work

