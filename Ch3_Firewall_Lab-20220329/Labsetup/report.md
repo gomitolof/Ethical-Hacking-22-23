@@ -54,6 +54,21 @@ The previous command set the policy for the built-in (non-user-defined) INPUT ch
 
 1. Outside hosts cannot ping internal hosts.
 
+2. Outside hosts can ping the router. No actions required since pinging the router do not involve the FORWARD, but I implement the following (similar to the previous task):
+```console
+# accept all the traffic exchanged between the internal network and the router
+iptables -A INPUT -s 192.168.60.0/24 -j ACCEPT
+iptables -A OUTPUT -d 192.168.60.0/24 -j ACCEPT
+
+# accept the ping packets directed to the router
+iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+
+# block all the other packets directed toward the router and going out from the router
+iptables -P OUTPUT DROP
+iptables -P INPUT DROP
+```
+
 3. Internal hosts can ping outside hosts.
 ```console
 iptables -A FORWARD -i eth0 -o eth1 -p icmp --icmp-type echo-reply -j ACCEPT
@@ -63,7 +78,7 @@ iptables -A FORWARD -i eth1 -o eth0 -p icmp --icmp-type echo-request -j ACCEPT
 
 4. All other packets between the internal and external networks should be blocked.
 ```console
-iptables -P FORWARD DROP
+iptables -A FORWARD -p icmp -j DROP
 ```
 
 ## 5.3 Task 2.C: Protecting Internal Server
@@ -74,36 +89,39 @@ iptables -A FORWARD -i eth0 -o eth1 -p tcp --dport 23 -d 192.168.60.5 -j ACCEPT
 ```
 
 2. Outside hosts cannot access other internal servers.
+```console
+iptables -A FORWARD -i eth0 -p tcp --dport 23 -j DROP
+```
 
-3. Internal hosts can access all the internal servers.
+3. Internal hosts can access all the internal servers. Works by default.
 
 4. Internal hosts cannot access external servers.
 ```console
-iptables -A FORWARD -p tcp --dport 23 -j DROP
+iptables -A FORWARD -o eth0 -p tcp --dport 23 -j DROP
 ```
 
 5. In this task, the connection tracking mechanism is not allowed. It will be used in a later task.
 
 ## 6.1 Task 3.A: Experiment with the Connection Tracking (Optional)
 
-1. ICMP experiment: Run the following command and check the connection tracking information on the router. Describe your observation. How long is the ICMP connection state be kept? After 29 seconds, the ICMP state is removed from the tracking mechanism. The remaining time is written as the 2nd value of the output returned. The first value is the id of the protocol used, while the other values describe the fields of the ICMP packets exchanged.
+1. ICMP experiment: Run the following command and check the connection tracking information on the router. Describe your observation. How long is the ICMP connection state be kept? After 29 seconds, the ICMP state is removed from the tracking mechanism (if no more pings are sent from 10.9.0.5). The countdown to the deletion of the connection is written as the 3rd value of the output returned. The 2nd value is the id of the protocol used, while the other values describe the header fields of the IP/ICMP packets exchanged. The "mark" metadata is a user settable value that specifies like a class for each connection.
 ```console
 icmp     1 29 src=10.9.0.5 dst=192.168.60.5 type=8 code=0 id=50 src=192.168.60.5 dst=10.9.0.5 type=0 code=0 id=50 mark=0 use=1
 conntrack v1.4.5 (conntrack-tools): 1 flow entries have been shown.
 ```
 
-2. UDP experiment: Run the following command and check the connection tracking information on the router. Describe your observation. How long is the UDP connection state be kept? If 10.9.0.5 sends various UDP packets, but 192.168.60.5 doesn't send anything, then after 29 seconds the UDP state is removed from the tracking mechanism. Also, in this case a writing UNREPLIED will compare in the tracking system for this state.
+2. UDP experiment: Run the following command and check the connection tracking information on the router. Describe your observation. How long is the UDP connection state be kept? The connection starts to be tracked when 10.9.0.5 sends at least one UDP packets. If 192.168.60.5 doesn't send back any UDP packet, then after 30 seconds the UDP state is removed from the tracking mechanism (if no more UDP packets are exchanged). Also, in this case the status UNREPLIED compare in the tracking system for this state. Otherwise, if 192.168.60.5 sends back some UDP packets to it, then the connection status is marked as ASSURED and after 120 seconds the UDP state is removed from the tracking mechanism (if no more UDP packets are exchanged). When a connection has seen traffic in both directions, the conntrack entry will erase the [UNREPLIED] flag, and then reset it. The entry that tells us that the connection has not seen any traffic in both directions, will be replaced by the [ASSURED] flag, to be found close to the end of the entry. The [ASSURED] flag tells us that this connection is assured and that it will not be erased if we reach the maximum possible tracked connections. Thus, connections marked as [ASSURED] will not be erased, contrary to the non-assured connections (those not marked as [ASSURED]). 
 ```console
 udp      17 27 src=10.9.0.5 dst=192.168.60.5 sport=35944 dport=9090 [UNREPLIED] src=192.168.60.5 dst=10.9.0.5 sport=9090 dport=35944 mark=0 use=1
 conntrack v1.4.5 (conntrack-tools): 1 flow entries have been shown.
 ```
-If 10.9.0.5 sends various UDP packets and also 192.168.60.5 sends some UDP packets to it, then after 119 seconds the UDP state is removed from the tracking mechanism.
+
 ```console
 udp      17 115 src=10.9.0.5 dst=192.168.60.5 sport=54197 dport=9090 src=192.168.60.5 dst=10.9.0.5 sport=9090 dport=54197 [ASSURED] mark=0 use=1
 conntrack v1.4.5 (conntrack-tools): 1 flow entries have been shown.
 ```
 
-3. TCP experiment: Run the following command and check the connection tracking information on the router. Describe your observation. How long is the TCP connection state be kept? After 431999 seconds that the TCP connection is established, the state is removed from the tracking mechanism.
+3. TCP experiment: Run the following command and check the connection tracking information on the router. Describe your observation. How long is the TCP connection state be kept? After 432000 seconds that the TCP connection is established the state is removed from the tracking mechanism (if no more TCP packets are exchanged). Note that, differently from what happens before, the connection is tracked immediately after we start it from the two machines, without requiring the exchange of other TCP packets.
 ```console
 tcp      6 431997 ESTABLISHED src=10.9.0.5 dst=192.168.60.5 sport=37564 dport=9090 src=192.168.60.5 dst=10.9.0.5 sport=9090 dport=37564 [ASSURED] mark=0 use=1
 conntrack v1.4.5 (conntrack-tools): 1 flow entries have been shown.
@@ -128,15 +146,14 @@ iptables -A FORWARD -p tcp -i eth0 --dport 23 -j DROP
 3. Internal hosts can access all the internal servers.
 
 4. Internal hosts can access external servers.
-```console
-iptables -A FORWARD -p tcp -i eth1 --dport 23 --syn -m conntrack --ctstate NEW -j ACCEPT
-```
-
-5. In this task, the connection tracking mechanism is allowed.
 
 After you write the rules using the connection tracking mechanism, think about how to do it without using the connection tracking mechanism (you do not need to actually implement them). Based on these two sets of rules, compare these two different approaches, and explain the advantage and disadvantage of each approach. When you are done with this task, remember to clear all the rules.
 
-The only way to allow packets of an already established connection in a stateless firewall is to allow all kinds of different packets inside the connections just for specific hosts in the network and/or for specific ports. But in this way the administrator has to insert a lot of rules for each specific host if he wants to maintain the security, otherwise he should allow every kind of packet sacrificing security. In the first case, we have a lot of rules to insert in the router w.r.t. the statefull firewall, while in the last case everyone can send any kind of packet toward the router, so it is no more useful.
+Without using connection tracking mechanism, the firewall rules for this task are less than the firewall rules using connection tracking mechanism (indeed, it is sufficient to not use the rule 4 in task 2.C) because it is not necessary to take into consideration the state of the protocol for this task. However, if we want to implement more sophisticated tasks, it can lead to inaccurate, unsafe, or complicated firewall rules. Indeed, the only way to allow to pass packets of an already established connection in a stateless firewall is to allow specific kinds of packets inside the connections just for some hosts in the network and/or for specific ports, with a specific type. But in this way the administrator have to insert a lot of rules, otherwise he should allows every kind of packet, but this is not totally secure.
+
+The connection tracking mechanism is easiest to use for complex rules and allow to take into consideration the context of the messages.
+
+
 
 ## 7 Task 4: Limiting Network Traffic (Optional)
 

@@ -16,3 +16,4 @@ iptables -t filter -A INPUT <rule> -j DROP
 iptables -F
 iptables -P OUTPUT ACCEPT
 iptables -P INPUT ACCEPT
+iptables -P FORWARD ACCEPT
