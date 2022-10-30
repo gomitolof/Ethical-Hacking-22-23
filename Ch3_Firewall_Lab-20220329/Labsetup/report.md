@@ -172,16 +172,12 @@ iptables -A FORWARD -s 10.9.0.5 -j DROP
 1. Using the nth mode (round-robin). Please provide some explanation for the rules.
 
 ```console
-iptables -t nat -A PREROUTING -p udp --dport 8080 -m statistic --mode nth --every 3 --packet 0 -j DNAT --to-destination 192.168.60.5:8080
-
-iptables -t nat -A PREROUTING -p udp --dport 8080 -m statistic --mode nth --every 3 --packet 1 -j DNAT --to-destination 192.168.60.6:8080
-
-iptables -t nat -A PREROUTING -p udp --dport 8080 -m statistic --mode nth --every 3 --packet 2 -j DNAT --to-destination 192.168.60.7:8080
+iptables -t nat -A PREROUTING -p udp --dport 8080 -m statistic --mode nth --every 3 --packet 0 -j DNAT --to-destination 192.168.60.5:8080 && iptables -t nat -A PREROUTING -p udp --dport 8080 -m statistic --mode nth --every 3 --packet 0 -j DNAT --to-destination 192.168.60.6:8080 && iptables -t nat -A PREROUTING -p udp --dport 8080 -m statistic --mode nth --every 3 --packet 0 -j DNAT --to-destination 192.168.60.7:8080
 ```
 
-* With the 1st rule in place, if you send a UDP packet to the router’s 8080 port, you will see that the 1st of the three packets gets to 192.168.60.5.
+* With the 1st rule, at the beginning the counter for this rule is 0 and if you send a 1st UDP packet to the router’s 8080 port, it gets to 192.168.60.5 because -- packet is set to 0 and this is the first rule in the nat table, so the first to be executed. Then, the counter for this rule go to 1.
 
-* With the 2nd rule in place, if you send a UDP packet to the router’s 8080 port, you will see that the 2nd of the three packets gets to 192.168.60.6.
+* With the 2nd rule in place, if you send a 2nd UDP packet to the router’s 8080 port, you will see that it gets to 192.168.60.6, and the counter for this rule goes to 1, while the first counter goes to 2.
 
 * With the 3rd rule in place, if you send a UDP packet to the router’s 8080 port, you will see that the 3rd of the three packets gets to 192.168.60.7.
 
