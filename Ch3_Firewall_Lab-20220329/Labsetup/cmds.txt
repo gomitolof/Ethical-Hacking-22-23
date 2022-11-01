@@ -17,3 +17,13 @@ iptables -F
 iptables -P OUTPUT ACCEPT
 iptables -P INPUT ACCEPT
 iptables -P FORWARD ACCEPT
+
+TASK 3.B commands:
+
+iptables -A FORWARD -p tcp -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+iptables -A FORWARD -p tcp -i eth0 -d 192.168.60.5 --dport 23 --syn -m conntrack --ctstate NEW -j ACCEPT
+iptables -A FORWARD -p tcp -i eth0 --dport 23 -j DROP
+
+Trials:
+- From external host try "telnet 192.168.60.5" and "telnet 192.168.60.6"
+- From internal host try "telnet 10.9.0.5"
