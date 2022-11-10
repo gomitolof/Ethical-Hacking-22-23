@@ -1,8 +1,8 @@
-cmd_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o := gcc -Wp,-MD,/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/.MeltdownKernel.mod.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include  -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -Iubuntu/include  -include ./include/linux/compiler_types.h -D__KERNEL__ -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Wno-format-security -std=gnu89 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -DCONFIG_X86_X32_ABI -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_SSSE3=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -DCONFIG_AS_AVX512=1 -DCONFIG_AS_SHA1_NI=1 -DCONFIG_AS_SHA256_NI=1 -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -fno-jump-tables -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 --param=allow-store-data-races=0 -Wframe-larger-than=1024 -fstack-protector-strong -Wno-unused-but-set-variable -Wimplicit-fallthrough -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -flive-patching=inline-clone -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -fmacro-prefix-map=./= -fcf-protection=none -Wno-packed-not-aligned  -DMODULE  -DKBUILD_BASENAME='"MeltdownKernel.mod"' -DKBUILD_MODNAME='"MeltdownKernel"' -c -o /home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o /home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.c
+cmd_/mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o := gcc -Wp,-MD,/mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/.MeltdownKernel.mod.o.d  -nostdinc -isystem /usr/lib/gcc/x86_64-linux-gnu/9/include  -I./arch/x86/include -I./arch/x86/include/generated  -I./include -I./arch/x86/include/uapi -I./arch/x86/include/generated/uapi -I./include/uapi -I./include/generated/uapi -include ./include/linux/kconfig.h -Iubuntu/include  -include ./include/linux/compiler_types.h -D__KERNEL__ -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs -fno-strict-aliasing -fno-common -fshort-wchar -fno-PIE -Werror=implicit-function-declaration -Werror=implicit-int -Werror=return-type -Wno-format-security -std=gnu89 -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx -fcf-protection=none -m64 -falign-jumps=1 -falign-loops=1 -mno-80387 -mno-fp-ret-in-387 -mpreferred-stack-boundary=3 -mskip-rax-setup -mtune=generic -mno-red-zone -mcmodel=kernel -DCONFIG_X86_X32_ABI -DCONFIG_AS_CFI=1 -DCONFIG_AS_CFI_SIGNAL_FRAME=1 -DCONFIG_AS_CFI_SECTIONS=1 -DCONFIG_AS_SSSE3=1 -DCONFIG_AS_AVX=1 -DCONFIG_AS_AVX2=1 -DCONFIG_AS_AVX512=1 -DCONFIG_AS_SHA1_NI=1 -DCONFIG_AS_SHA256_NI=1 -Wno-sign-compare -fno-asynchronous-unwind-tables -mindirect-branch=thunk-extern -mindirect-branch-register -fno-jump-tables -fno-delete-null-pointer-checks -Wno-frame-address -Wno-format-truncation -Wno-format-overflow -Wno-address-of-packed-member -O2 --param=allow-store-data-races=0 -Wframe-larger-than=1024 -fstack-protector-strong -Wimplicit-fallthrough -Wno-unused-but-set-variable -Wno-unused-const-variable -fno-omit-frame-pointer -fno-optimize-sibling-calls -fno-var-tracking-assignments -pg -mrecord-mcount -mfentry -DCC_USING_FENTRY -flive-patching=inline-clone -Wdeclaration-after-statement -Wvla -Wno-pointer-sign -Wno-stringop-truncation -Wno-array-bounds -Wno-stringop-overflow -Wno-restrict -Wno-maybe-uninitialized -fno-strict-overflow -fno-merge-all-constants -fmerge-constants -fno-stack-check -fconserve-stack -Werror=date-time -Werror=incompatible-pointer-types -Werror=designated-init -fmacro-prefix-map=./= -Wno-packed-not-aligned  -DMODULE  -DKBUILD_BASENAME='"MeltdownKernel.mod"' -DKBUILD_MODNAME='"MeltdownKernel"' -c -o /mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o /mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.c
 
-source_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o := /home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.c
+source_/mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o := /mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.c
 
-deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o := \
+deps_/mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o := \
     $(wildcard include/config/module/unload.h) \
     $(wildcard include/config/retpoline.h) \
   include/linux/kconfig.h \
@@ -16,6 +16,7 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
     $(wildcard include/config/cc/has/asm/inline.h) \
   include/linux/compiler_attributes.h \
   include/linux/compiler-gcc.h \
+    $(wildcard include/config/arm64.h) \
     $(wildcard include/config/arch/use/builtin/bswap.h) \
   include/linux/build-salt.h \
     $(wildcard include/config/build/salt.h) \
@@ -66,6 +67,7 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
     $(wildcard include/config/trace/branch/profiling.h) \
     $(wildcard include/config/profile/all/branches.h) \
     $(wildcard include/config/stack/validation.h) \
+    $(wildcard include/config/debug/entry.h) \
     $(wildcard include/config/kasan.h) \
   arch/x86/include/asm/barrier.h \
   arch/x86/include/asm/alternative.h \
@@ -175,6 +177,11 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
     $(wildcard include/config/arch/supports/int128.h) \
   include/uapi/linux/time.h \
   include/uapi/linux/time_types.h \
+  include/linux/errno.h \
+  include/uapi/linux/errno.h \
+  arch/x86/include/generated/uapi/asm/errno.h \
+  include/uapi/asm-generic/errno.h \
+  include/uapi/asm-generic/errno-base.h \
   arch/x86/include/asm/current.h \
   arch/x86/include/asm/percpu.h \
     $(wildcard include/config/x86/64/smp.h) \
@@ -273,9 +280,6 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
   arch/x86/include/asm/msr.h \
     $(wildcard include/config/tracepoints.h) \
   arch/x86/include/asm/msr-index.h \
-  arch/x86/include/generated/uapi/asm/errno.h \
-  include/uapi/asm-generic/errno.h \
-  include/uapi/asm-generic/errno-base.h \
   arch/x86/include/asm/cpumask.h \
   include/linux/cpumask.h \
     $(wildcard include/config/cpumask/offstack.h) \
@@ -302,7 +306,6 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
   arch/x86/include/uapi/asm/msr.h \
   include/linux/tracepoint-defs.h \
   arch/x86/include/asm/paravirt.h \
-    $(wildcard include/config/debug/entry.h) \
   arch/x86/include/asm/frame.h \
   arch/x86/include/asm/special_insns.h \
   arch/x86/include/asm/fpu/types.h \
@@ -427,8 +430,6 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
   include/uapi/linux/wait.h \
   include/linux/uprobes.h \
     $(wildcard include/config/uprobes.h) \
-  include/linux/errno.h \
-  include/uapi/linux/errno.h \
   arch/x86/include/asm/uprobes.h \
   include/linux/notifier.h \
     $(wildcard include/config/tree/srcu.h) \
@@ -462,8 +463,8 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
     $(wildcard include/config/hz.h) \
   include/uapi/asm-generic/param.h \
   arch/x86/include/asm/timex.h \
-  arch/x86/include/asm/tsc.h \
     $(wildcard include/config/x86/tsc.h) \
+  arch/x86/include/asm/tsc.h \
   include/linux/jiffies.h \
   include/generated/timeconst.h \
   include/linux/timekeeping.h \
@@ -533,7 +534,6 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
     $(wildcard include/config/memory/hotremove.h) \
     $(wildcard include/config/have/arch/pfn/valid.h) \
     $(wildcard include/config/holes/in/zone.h) \
-    $(wildcard include/config/arch/has/holes/memorymodel.h) \
   include/linux/nodemask.h \
   include/linux/pageblock-flags.h \
     $(wildcard include/config/hugetlb/page/size/variable.h) \
@@ -641,8 +641,6 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
   include/linux/kobject_ns.h \
   include/linux/kref.h \
   include/linux/refcount.h \
-    $(wildcard include/config/refcount/full.h) \
-  arch/x86/include/asm/refcount.h \
   include/linux/moduleparam.h \
     $(wildcard include/config/alpha.h) \
     $(wildcard include/config/ia64.h) \
@@ -682,6 +680,6 @@ deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKer
   include/linux/vermagic.h \
   include/generated/utsrelease.h \
 
-/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o: $(deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o)
+/mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o: $(deps_/mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o)
 
-$(deps_/home/seed/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o):
+$(deps_/mnt/Dati/Downloads/Projects/Ethical-Hacking-22-23/Meltdown_Lab-20221102/Labsetup/MeltdownKernel.mod.o):

