@@ -1,0 +1,13 @@
+2022-11-22T19:48:58.362696Z 0 [System] [MY-010116] [Server] /usr/sbin/mysqld (mysqld 8.0.22) starting as process 90
+2022-11-22T19:48:58.455737Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2022-11-22T19:48:59.654553Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2022-11-22T19:48:59.814702Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Socket: /var/run/mysqld/mysqlx.sock
+2022-11-22T19:49:01.824759Z 0 [Warning] [MY-000054] [Server] World-writable config file './auto.cnf' is ignored.
+2022-11-22T19:49:01.879271Z 0 [Warning] [MY-010107] [Server] World-writable config file './auto.cnf' has been removed.
+2022-11-22T19:49:01.925667Z 0 [Warning] [MY-010075] [Server] No existing UUID has been found, so we assume that this is the first time that this server has been started. Generating a new UUID: b699b0bd-6a9e-11ed-8811-02420a090006.
+2022-11-22T19:49:02.539972Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2022-11-22T19:49:02.575136Z 0 [System] [MY-013602] [Server] Channel mysql_main configured to support TLS. Encrypted connections are now supported for this channel.
+2022-11-22T19:49:02.704114Z 0 [Warning] [MY-011810] [Server] Insecure configuration for --pid-file: Location '/var/run/mysqld' in the path is accessible to all OS users. Consider choosing a different directory.
+2022-11-22T19:49:03.015841Z 0 [System] [MY-010931] [Server] /usr/sbin/mysqld: ready for connections. Version: '8.0.22'  socket: '/var/run/mysqld/mysqld.sock'  port: 0  MySQL Community Server - GPL.
+2022-11-22T19:50:28.001788Z 14 [System] [MY-013172] [Server] Received SHUTDOWN from user root. Shutting down mysqld (Version: 8.0.22).
+2022-11-22T19:50:44.533970Z 0 [System] [MY-010910] [Server] /usr/sbin/mysqld: Shutdown complete (mysqld 8.0.22)  MySQL Community Server - GPL.
