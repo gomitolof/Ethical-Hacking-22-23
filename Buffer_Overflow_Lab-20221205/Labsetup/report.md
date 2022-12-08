@@ -52,16 +52,27 @@ Finally, use netcat to send to the server the created badfile that will overflow
 $ cat badfile | nc 10.9.0.5 9090
 ```
 
-# Task 3
+# Task 3: Level-2 Attack
 
-Disable all protection and compile with debugging symbols. -q read symbols from binary file
+Create a new Makefile for the server code in which we disable all the mitigations and enable the compilation with the debugging option -g (see Makefile inside server-code-debug folder), then run:
 
 ```console
-$ gcc -z execstack -fno-stack-protector -g -o stack_dbg stack.c
-$ gdb -q stack-L2
+$ make
+```
+
+After that, debug the stack-L2.out and stack-L1.out binary files with -q (option that allow to read from a binary file) and execute the following commands for each of the two executables:
+
+```console
+$ gdb -q stack-L?
 $ b bof
 $ pattern create 2000 input
 $ r < input
 $ p $ebp
 $ p &buffer
 ```
+
+We can notice that the buffer addresses are differents among the two executables, while the ebp addresses are equal. However, even if these addresses are not the same as the real ones used by the programs running on the servers, they suggest to us that the same ebp is used always by the executables. So, just resuing the same ebp retrived in the previous task, and the buffer address returned by the target container, we can exploit another time the buffer overflow lunching a reverse shell.
+
+Notice that the bof function inside the stack program use 3 local variables. If for example 180 bytes are used to store the buffer, 4 + 4 bytes are used for the other two local variables, so the base pointer ebp address is situated after 188 bytes from the buffer's address, specifically at distance equal to 192.
+
+# Task 4: Level-3 Attack
