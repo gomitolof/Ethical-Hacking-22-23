@@ -66,6 +66,10 @@ In order to change the execution flow of the stack program, we can overwrite all
 
 # Task 4: Level-3 Attack
 
+Since the zeros posed at the end of every address stop the copy during the execution of strcpy function, everything after the return address will not be copy, so we have to change the position of the shellcode. Solution: put the shellcode just below the return address pointer and use as return address the one of the buffer. In this way, the shellcode will be for sure copied on the buffer and executed thanks to the return address and NOP slide instructions.
+
+# Task 5: Level-4 Attack
+
 Create a new Makefile for the server code in which we disable all the mitigations and enable the compilation with the debugging option -g (see Makefile inside server-code-debug folder), then run:
 
 ```console
@@ -86,6 +90,4 @@ $ p &buffer
 We can notice that the buffer addresses are differents among the two executables, while the ebp addresses are equal. However, even if these addresses are not the same as the real ones used by the programs running on the servers, they suggest to us that the same ebp is used always by the executables. So, just resuing the same ebp retrived in the previous task, and the buffer address returned by the target container, we can exploit another time the buffer overflow lunching a reverse shell.
 
 Notice that the bof function inside the stack program use 3 local variables. If for example 180 bytes are used to store the buffer, 4 + 4 bytes are used for the other two local variables, so the base pointer ebp address is situated after 188 bytes from the buffer's address, specifically at distance equal to 192.
-
-# Task 4: Level-3 Attack
 
