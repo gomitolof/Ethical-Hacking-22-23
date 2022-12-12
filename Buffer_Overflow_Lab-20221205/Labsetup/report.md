@@ -54,6 +54,20 @@ $ cat badfile | nc 10.9.0.5 9090
 
 # Task 3: Level-2 Attack
 
+We know these facts:
+
+- We can put the shellcode at the end of the overwritted data.
+
+- Buffer as size between 100 and 300.
+
+- The address of the buffer.
+
+In order to change the execution flow of the stack program, we can overwrite all content in the positions inside Badfile between 100 and 300 with the possible shellcode address, while leave the NOP instruction in all the others positions. The new return address that points to the shellcode should be lower than the shellcode address, and bigger than the possible buffer size (maximum 300). In this way, even if the address is not exact, the NOP instructions slide the pointer until a code is found in a cell of memory, that is, our shellcode. Badfile construction is made by exploit-L2.py, the rest of the attack is conducted in the same way as in the previous task.
+
+
+
+
+
 Create a new Makefile for the server code in which we disable all the mitigations and enable the compilation with the debugging option -g (see Makefile inside server-code-debug folder), then run:
 
 ```console
