@@ -1,0 +1,8 @@
+nasm -f elf32 mysh.s -o mysh.o
+ld -m elf_i386 mysh.o -o mysh       ld --omagic -m elf\_i386 mysh2.o -o mysh2
+objdump -Mintel --disassemble mysh.o
+xxd -p -c 20 mysh.o
+
+
+nasm -f elf64 mysh_64.s -o mysh_64.o
+ld mysh_64.o -o mysh_64
