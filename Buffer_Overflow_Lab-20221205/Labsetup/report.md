@@ -70,13 +70,54 @@ Since the zeros posed at the end of every address stop the copy during the execu
 
 # Task 5: Level-4 Attack
 
+Since now the buffer size is much smaller (80 bytes) than the shellcode length (165 bytes), we exploit the following facts:
+
+* Function stacks frames are stored from the higher addresses to the lower addresses when invoked, so the main stack frame is the higher one.
+
+* The main in the stack program invokes two nested functions: dummy_function which invokes bof function.
+
+* When the stack program is executed, first store the input in a variable called str that is passed to dummy_function and then to bof function.
+
+So, also inside the str function we have our badfile stored with our shellcode. Using as return address the address of the buffer + 1500 we can reach the str variable inside the main stack frame from the bof stack frame, and the NOPs slide the pointer towards the shellcode.
+
+# Task 6: Experimenting with the Address Randomization (optional)
+
+*In your report, please report your observation, and explain why ASLR makes the buffer-overflow attack more difficult*: sending multiple messages with Address Space Layout Randomization (ASLR) countermeasure turned on, we note the following:
+
+* sending messages to 10.9.0.5 server, the ebp inside the bof function and the buffer address will change every time. However, the first two hexadecimal characters remain the same always with value "ff". The remaining 6 characters change, with 16<sup>6</sup> = 16777216 possible combinations.
+
+* sending messages to 10.9.0.7 server, the rbp inside the bof function and the buffer address will change every time. However, the first eight hexadecimal characters remain the same always with value "00007fff". The remaining 8 characters change, with 16<sup>8</sup> = 4294967296 possible combinations.
+
+# Tasks 7: Experimenting with Other Countermeasures (optional)
+
+## Task 7.a: Turn on the StackGuard Protection
+
+The program crashes, saying:
+
+```console
+...
+*** stack smashing detected ***: terminated
+Annullato (core dump creato)
+```
+
+## Task 7.b: Turn on the Non-executable Stack Protection
+
+The program crashes, saying:
+
+```console
+...
+Errore di segmentazione (core dump creato)
+```
+
+# Debug the stack program with gdb peda
+
 Create a new Makefile for the server code in which we disable all the mitigations and enable the compilation with the debugging option -g (see Makefile inside server-code-debug folder), then run:
 
 ```console
 $ make
 ```
 
-After that, debug the stack-L2.out and stack-L1.out binary files with -q (option that allow to read from a binary file) and execute the following commands for each of the two executables:
+After that, debug the stack-L4.out, stack-L3.out, stack-L2.out and stack-L1.out binary files with -q (option that allow to read from a binary file) and execute the following commands for each of the two executables:
 
 ```console
 $ gdb -q stack-L?
@@ -87,7 +128,5 @@ $ p $ebp
 $ p &buffer
 ```
 
-We can notice that the buffer addresses are differents among the two executables, while the ebp addresses are equal. However, even if these addresses are not the same as the real ones used by the programs running on the servers, they suggest to us that the same ebp is used always by the executables. So, just resuing the same ebp retrived in the previous task, and the buffer address returned by the target container, we can exploit another time the buffer overflow lunching a reverse shell.
-
-Notice that the bof function inside the stack program use 3 local variables. If for example 180 bytes are used to store the buffer, 4 + 4 bytes are used for the other two local variables, so the base pointer ebp address is situated after 188 bytes from the buffer's address, specifically at distance equal to 192.
+Notice that the bof function inside the stack program use 3 local variables. For example 180 bytes are used to store the buffer (as in L2 attack), 4 + 4 bytes are used for the other two local variables, so the base pointer ebp address is situated after 188 bytes from the buffer's address, specifically at distance equal to 192.
 
