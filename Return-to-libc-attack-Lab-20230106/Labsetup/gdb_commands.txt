@@ -1,0 +1,7 @@
+break main
+run
+p execv
+p exit
+p main
+p bof
+quit

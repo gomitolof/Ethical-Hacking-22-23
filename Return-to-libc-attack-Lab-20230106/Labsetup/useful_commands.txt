@@ -1,0 +1,7 @@
+sudo sysctl -w kernel.randomize_va_space=0
+touch badfile
+gdb -q retlib
+gdb -q -batch -x gdb_commands.txt ./retlib
+sudo ln -sf /bin/zsh /bin/sh
+export MYSHELL1=/bin/sh && export MYSHELL2=-p
+gcc -m32 -fno-stack-protector -z noexecstack -o prtenv prtenv.c
