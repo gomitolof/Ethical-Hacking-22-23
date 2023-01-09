@@ -4,4 +4,5 @@ p execv
 p exit
 p main
 p bof
+p foo
 quit
